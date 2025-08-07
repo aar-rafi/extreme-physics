@@ -1,6 +1,7 @@
 import Hero from "@/components/Hero";
 import SimulationCard from "@/components/SimulationCard";
 import { SEO } from "@/components/SEO";
+import TeamSection from "@/components/TeamSection";
 
 const ProjectilePreview = () => (
   <svg viewBox="0 0 200 112" className="w-full h-full">
@@ -37,7 +38,16 @@ const Index = () => {
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Any',
     offers: { '@type': 'Offer', price: '0' },
-    description: 'Accurate, interactive physics simulations for projectile motion and the two-body problem.'
+    description: 'Accurate, interactive physics simulations for projectile motion and the two-body problem.',
+    creator: {
+      '@type': 'Organization',
+      name: 'Modern Browser Lab',
+      member: [
+        { '@type': 'Person', name: 'Dr. Alex Chen', jobTitle: 'Computational Physicist' },
+        { '@type': 'Person', name: 'Maya Patel', jobTitle: 'Frontend Engineer' },
+        { '@type': 'Person', name: 'Diego Ramos', jobTitle: 'Visualization Engineer' }
+      ]
+    }
   };
 
   return (
@@ -84,6 +94,7 @@ const Index = () => {
             </article>
           </div>
         </section>
+        <TeamSection />
       </main>
     </>
   );
