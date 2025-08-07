@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "builds": [
+    { "src": "vite.config.ts", "use": "@vercel/static-build", "config": { "distDir": "dist" } }
+  ],
+  "routes": [
+    { "src": "/two-body", "dest": "/2body/index.html" },
+    { "src": "/twobody", "dest": "/2body/index.html" },
+    { "src": "/2body/(.*)", "dest": "/2body/$1" },
+    { "src": "/(.*)", "dest": "/index.html" }
+  ]
+}
+
+

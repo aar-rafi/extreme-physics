@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Gravitational Two-Body Simulation</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+    <div id="app">
+        <div id="controls">
+            <div class="section">
+                <div class="row between">
+                    <h2>Two-Body Gravity</h2>
+                    <div class="row gap">
+                        <button id="toggleRunBtn" class="primary">Start</button>
+                        <button id="resetBtn">Reset</button>
+                        <button id="clearTrailsBtn">Clear Trails</button>
+                    </div>
+                </div>
+                <div class="grid two">
+                    <div class="form-group">
+                        <label for="scenarioSelect">Templates</label>
+                        <select id="scenarioSelect"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>&nbsp;</label>
+                        <button id="loadScenarioBtn">Load Scenario</button>
+                    </div>
+                </div>
+                <div class="section small" id="scenarioDesc" style="margin-top:-6px"></div>
+                <div class="grid two">
+                    <div class="form-group">
+                        <label for="integrator">Integrator</label>
+                        <select id="integrator">
+                            <option value="velocity_verlet" selected>Velocity Verlet (symplectic)</option>
+                            <option value="rk4">Runge–Kutta 4</option>
+                            <option value="rk45">RK45 (adaptive)</option>
+                            <option value="semi_implicit_euler">Semi-Implicit Euler</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="gravitationalConstant">G</label>
+                        <input id="gravitationalConstant" type="number" step="0.001" min="0" value="1" />
+                    </div>
+                    <div class="form-group">
+                        <label for="timeStep">dt (sim seconds/step)</label>
+                        <input id="timeStep" type="number" step="0.001" min="0.0001" value="0.1" />
+                    </div>
+                    <div class="form-group">
+                        <label for="speedMultiplier">Speed (steps/frame)</label>
+                        <input id="speedMultiplier" type="number" step="1" min="1" value="4" />
+                    </div>
+                    <div class="form-group">
+                        <label for="trailMax">Trail length (points)</label>
+                        <input id="trailMax" type="number" step="10" min="50" value="1200" />
+                    </div>
+                    <div class="form-group">
+                        <label for="softening">Softening ε</label>
+                        <input id="softening" type="number" step="0.000001" min="0" value="0" />
+                    </div>
+                </div>
+                <div class="grid two options">
+                    <label class="checkbox"><input id="showTrails" type="checkbox" checked />Show trails</label>
+                    <label class="checkbox"><input id="showCenterOfMass" type="checkbox" checked />Show COM</label>
+                </div>
+                <div class="grid two options">
+                    <label class="checkbox"><input id="renderCOMFrame" type="checkbox" />COM frame</label>
+                    <label class="checkbox"><input id="lockCOM" type="checkbox" />Lock COM at center</label>
+                </div>
+                <div class="grid two options">
+                    <label class="checkbox"><input id="enableCollisions" type="checkbox" />Collisions (elastic)</label>
+                    <div class="form-group inline">
+                        <label for="restitution">Restitution e</label>
+                        <input id="restitution" type="number" step="0.01" min="0" max="1" value="1" />
+                    </div>
+                </div>
+                <div class="grid two">
+                    <div class="form-group">
+                        <label for="absTol">Abs tol (RK45)</label>
+                        <input id="absTol" type="number" step="0.000001" min="0" value="0.00001" />
+                    </div>
+                    <div class="form-group">
+                        <label for="relTol">Rel tol (RK45)</label>
+                        <input id="relTol" type="number" step="0.000001" min="0" value="0.00001" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>Vectors</h3>
+                <div class="grid two">
+                    <label class="checkbox"><input id="showVelocityVectors" type="checkbox" checked />Velocity vectors</label>
+                    <label class="checkbox"><input id="showForceVectors" type="checkbox" />Force vectors</label>
+                    <label class="checkbox"><input id="showPositionVectors" type="checkbox" />Position vectors</label>
+                    <label class="checkbox"><input id="showDisplacementVector" type="checkbox" />Displacement (b1→b2)</label>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>Body 1</h3>
+                <div class="form-group">
+                    <label for="m1">Mass</label>
+                    <input id="m1" type="number" step="0.1" min="0.01" value="10" />
+                </div>
+                <div class="grid two">
+                    <div class="form-group">
+                        <label for="x1">x</label>
+                        <input id="x1" type="number" step="1" value="-150" />
+                    </div>
+                    <div class="form-group">
+                        <label for="y1">y</label>
+                        <input id="y1" type="number" step="1" value="0" />
+                    </div>
+                </div>
+                <div class="grid two">
+                    <div class="form-group">
+                        <label for="vx1">vx</label>
+                        <input id="vx1" type="number" step="0.1" value="0" />
+                    </div>
+                    <div class="form-group">
+                        <label for="vy1">vy</label>
+                        <input id="vy1" type="number" step="0.1" value="-0.5" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>Body 2</h3>
+                <div class="form-group">
+                    <label for="m2">Mass</label>
+                    <input id="m2" type="number" step="0.1" min="0.01" value="1" />
+                </div>
+                <div class="grid two">
+                    <div class="form-group">
+                        <label for="x2">x</label>
+                        <input id="x2" type="number" step="1" value="150" />
+                    </div>
+                    <div class="form-group">
+                        <label for="y2">y</label>
+                        <input id="y2" type="number" step="1" value="0" />
+                    </div>
+                </div>
+                <div class="grid two">
+                    <div class="form-group">
+                        <label for="vx2">vx</label>
+                        <input id="vx2" type="number" step="0.1" value="0" />
+                    </div>
+                    <div class="form-group">
+                        <label for="vy2">vy</label>
+                        <input id="vy2" type="number" step="0.1" value="1.58" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>Escape Status</h3>
+                <div class="grid two">
+                    <div><strong>Status:</strong> <span id="escapeStatusText">Bound</span></div>
+                    <div><strong>t_escape:</strong> <span id="escapeTimeText">–</span></div>
+                    <div><strong>v_rel:</strong> <span id="relativeSpeedText">0</span></div>
+                    <div><strong>v_escape:</strong> <span id="escapeSpeedText">0</span></div>
+                    <div class="form-group" style="grid-column: span 2;">
+                        <label>Specific energy ε (relative)</label>
+                        <div><span id="specificEnergyText">0</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section small">
+                <p>
+                    Tip: Drag a body on the canvas to reposition. Hold Shift while dragging
+                    to set its velocity.
+                </p>
+            </div>
+        </div>
+
+        <div id="resizer" title="Drag to resize"></div>
+
+        <canvas id="canvas"></canvas>
+        <div id="livePanel" class="live-panel" style="display:none;">
+            <h4>Live State</h4>
+            <div class="live-grid">
+                <div>b1 x</div><div id="b1_x_live">0</div>
+                <div>b1 y</div><div id="b1_y_live">0</div>
+                <div>b1 vx</div><div id="b1_vx_live">0</div>
+                <div>b1 vy</div><div id="b1_vy_live">0</div>
+                <div>b2 x</div><div id="b2_x_live">0</div>
+                <div>b2 y</div><div id="b2_y_live">0</div>
+                <div>b2 vx</div><div id="b2_vx_live">0</div>
+                <div>b2 vy</div><div id="b2_vy_live">0</div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="js/index.js"></script>
+</body>
+
+</html>
+
+
