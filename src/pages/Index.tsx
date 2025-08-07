@@ -89,7 +89,7 @@ const Index = () => {
                 JA
               </div>
               <h3 className="text-lg font-semibold mb-1">Jaber Ahmed</h3>
-              <p className="text-sm text-muted-foreground mb-3">Senior Developer</p>
+              <p className="text-sm text-muted-foreground mb-3">BUET, CSE</p>
               <p className="text-sm">Full-stack developer with expertise in interactive visualizations and real-time simulations.</p>
             </article>
             <article className="rounded-lg border p-6 bg-card shadow-sm text-center">
@@ -97,7 +97,7 @@ const Index = () => {
                 JH
               </div>
               <h3 className="text-lg font-semibold mb-1">MD. Jakaria Hossain</h3>
-              <p className="text-sm text-muted-foreground mb-3">Research Scientist</p>
+              <p className="text-sm text-muted-foreground mb-3">BUET, CSE</p>
               <p className="text-sm">Astrophysicist focused on orbital mechanics and gravitational dynamics. Postdoc at Caltech.</p>
             </article>
             <article className="rounded-lg border p-6 bg-card shadow-sm text-center">
@@ -105,7 +105,7 @@ const Index = () => {
                 AR
               </div>
               <h3 className="text-lg font-semibold mb-1">MD. As-Aid Rahman</h3>
-              <p className="text-sm text-muted-foreground mb-3">Research Scientist</p>
+              <p className="text-sm text-muted-foreground mb-3">BUET, CSE</p>
               <p className="text-sm">Astrophysicist focused on orbital mechanics and gravitational dynamics. Postdoc at Caltech.</p>
             </article>
           </div>
