@@ -75,7 +75,7 @@ const Index = () => {
               The passionate physicists and developers behind these interactive simulations
             </p>
           </div>
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 mb-20">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-20">
             <article className="rounded-lg border p-6 bg-card shadow-sm text-center">
               <div className="w-24 h-24 rounded-full bg-gradient-hero mx-auto mb-4 flex items-center justify-center text-white font-bold text-xl">
                 DR
@@ -97,6 +97,14 @@ const Index = () => {
                 SA
               </div>
               <h3 className="text-lg font-semibold mb-1">Dr. Sarah Ahmed</h3>
+              <p className="text-sm text-muted-foreground mb-3">Research Scientist</p>
+              <p className="text-sm">Astrophysicist focused on orbital mechanics and gravitational dynamics. Postdoc at Caltech.</p>
+            </article>
+            <article className="rounded-lg border p-6 bg-card shadow-sm text-center">
+              <div className="w-24 h-24 rounded-full bg-gradient-hero mx-auto mb-4 flex items-center justify-center text-white font-bold text-xl">
+                SA
+              </div>
+              <h3 className="text-lg font-semibold mb-1">gaber</h3>
               <p className="text-sm text-muted-foreground mb-3">Research Scientist</p>
               <p className="text-sm">Astrophysicist focused on orbital mechanics and gravitational dynamics. Postdoc at Caltech.</p>
             </article>
