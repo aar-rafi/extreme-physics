@@ -12,6 +12,8 @@
     { "source": "/two-body", "destination": "/2body/index.html" },
     { "source": "/twobody", "destination": "/2body/index.html" },
     { "source": "/2body/:path*", "destination": "/2body/:path*" },
+    { "source": "/projectile", "destination": "/projectile/index.html" },
+    { "source": "/projectile/:path*", "destination": "/projectile/:path*" },
     { "source": "/:path*", "destination": "/index.html" }
   ]
 }

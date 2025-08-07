@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Projectile Motion Simulator</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <div id="app">
+      <!-- Mode Switcher -->
+      <div id="modeSwitcher" class="mode-switcher">
+        <button id="learningMode" class="mode-btn active">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+          </svg>
+          Learning
+        </button>
+        <button id="gameMode" class="mode-btn">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <circle cx="12" cy="10" r="3" />
+            <path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662" />
+          </svg>
+          Game
+        </button>
+      </div>
+
+      <!-- Left Sidebar - Analysis Controls -->
+      <div id="controls">
+        <div class="section panel">
+          <div class="row between">
+            <h2>
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"
+                />
+              </svg>
+              <span id="modeTitle">Projectile Analysis</span>
+            </h2>
+            <div class="row gap">
+              <button id="launchBtn" class="primary">
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <polygon points="5,3 19,12 5,21" />
+                </svg>
+                <span id="launchBtnText">Launch</span>
+              </button>
+              <button id="resetBtn">
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+                  <path d="M3 3v5h5" />
+                </svg>
+                Reset
+              </button>
+            </div>
+          </div>
+
+          <!-- Launch Parameters -->
+          <div class="control-group">
+            <h3>
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                <path d="M2 17l10 5 10-5" />
+                <path d="M2 12l10 5 10-5" />
+              </svg>
+              Launch Parameters
+            </h3>
+            <div class="param-list">
+              <div class="param">
+                <label for="speed">Initial Speed (m/s)</label>
+                <input
+                  id="speedRange"
+                  type="range"
+                  min="1"
+                  max="100"
+                  step="0.1"
+                  value="50"
+                />
+                <input
+                  id="speed"
+                  type="number"
+                  step="0.1"
+                  min="0.1"
+                  value="50"
+                />
+              </div>
+              <div class="param">
+                <label for="angle">Launch Angle (°)</label>
+                <input
+                  id="angleRange"
+                  type="range"
+                  min="0"
+                  max="90"
+                  step="0.5"
+                  value="45"
+                />
+                <input
+                  id="angle"
+                  type="number"
+                  step="0.5"
+                  min="0"
+                  max="90"
+                  value="45"
+                />
+              </div>
+              <div class="param">
+                <label for="mass">Mass (kg)</label>
+                <input
+                  id="massRange"
+                  type="range"
+                  min="0.1"
+                  max="10"
+                  step="0.1"
+                  value="1"
+                />
+                <input id="mass" type="number" step="0.1" min="0.1" value="1" />
+              </div>
+              <div class="param">
+                <label for="launchHeight">Launch Height (m)</label>
+                <input
+                  id="launchHeightRange"
+                  type="range"
+                  min="0"
+                  max="100"
+                  step="0.1"
+                  value="0"
+                />
+                <input
+                  id="launchHeight"
+                  type="number"
+                  step="0.1"
+                  min="0"
+                  value="0"
+                />
+              </div>
+              <div class="param">
+                <label for="landingHeight">Landing Height (m)</label>
+                <input
+                  id="landingHeightRange"
+                  type="range"
+                  min="0"
+                  max="100"
+                  step="0.1"
+                  value="0"
+                />
+                <input
+                  id="landingHeight"
+                  type="number"
+                  step="0.1"
+                  min="0"
+                  value="0"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Air Resistance Parameters -->
+          <div class="control-group">
+            <h3>
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+              </svg>
+              Air Resistance
+            </h3>
+            <div class="air-resistance-toggle">
+              <label class="checkbox">
+                <input type="checkbox" id="airResistance" />
+                <span>Enable Air Resistance</span>
+              </label>
+            </div>
+            <div class="param-list">
+              <div class="param">
+                <label for="dragCoeff">Drag Coefficient (Cd)</label>
+                <input
+                  id="dragCoeffRange"
+                  type="range"
+                  min="0"
+                  max="2"
+                  step="0.01"
+                  value="0.47"
+                />
+                <input
+                  id="dragCoeff"
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  value="0.47"
+                />
+              </div>
+              <div class="param">
+                <label for="area">Cross-sectional Area (m²)</label>
+                <input
+                  id="areaRange"
+                  type="range"
+                  min="0"
+                  max="0.1"
+                  step="0.001"
+                  value="0.01"
+                />
+                <input
+                  id="area"
+                  type="number"
+                  step="0.001"
+                  min="0"
+                  value="0.01"
+                />
+              </div>
+              <div class="param">
+                <label for="airDensity">Air Density (kg/m³)</label>
+                <input
+                  id="airDensityRange"
+                  type="range"
+                  min="0"
+                  max="2"
+                  step="0.001"
+                  value="1.225"
+                />
+                <input
+                  id="airDensity"
+                  type="number"
+                  step="0.001"
+                  min="0"
+                  value="1.225"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Simulation Options (moved to right overlay; keep hidden for compatibility) -->
+          <div class="control-group" style="display: none">
+            <h3>
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <circle cx="12" cy="12" r="3" />
+                <path d="M12 1v6m0 6v6" />
+                <path d="M1 12h6m6 0h6" />
+              </svg>
+              Simulation Options
+            </h3>
+            <div class="grid three">
+              <label class="checkbox"
+                ><input type="checkbox" id="showGridLeft" checked /> Grid</label
+              >
+              <label class="checkbox"
+                ><input type="checkbox" id="showPrediction" /> Prediction</label
+              >
+              <label class="checkbox"
+                ><input type="checkbox" id="airResistanceLeft" /> Air</label
+              >
+            </div>
+            <div class="form-group">
+              <label for="solver">Solver Method</label>
+              <select id="solver">
+                <option value="analytic">Analytic (no drag)</option>
+                <option value="euler">Euler</option>
+                <option value="rk4">Runge-Kutta 4</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Game Mode Controls -->
+          <div id="gameControls" class="control-group" style="display: none">
+            <h3>
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                <path d="M22 12h-6l-2-6H8L6 12H2" />
+              </svg>
+              Game Controls
+            </h3>
+            <div class="game-instructions">
+              <p><strong>Instructions:</strong></p>
+              <ul>
+                <li>Drag the target to set prediction point</li>
+                <li>Click and drag on cannon to adjust angle</li>
+                <li>Scroll on cannon to adjust height</li>
+                <li>Click Launch to fire!</li>
+              </ul>
+            </div>
+            <div class="game-stats">
+              <div class="stat-item">
+                <span class="stat-label">Score:</span>
+                <span id="gameScore" class="stat-value">0</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label">Accuracy:</span>
+                <span id="gameAccuracy" class="stat-value">0%</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="section small">
+            <p>
+              <strong>Tip:</strong> Click Launch to animate. Change inputs to
+              re-run. Enable Air Resistance to include drag effects.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Resize Handle -->
+      <div id="resizeHandle" class="resize-handle"></div>
+
+      <!-- Main Content Area - 2x2 Grid -->
+      <div id="mainContent">
+        <!-- Top Row - Projectile Simulation -->
+        <div id="simulationPane" class="simulation-pane">
+          <canvas id="canvas"></canvas>
+
+          <!-- Flight Metrics Overlay -->
+          <div id="metricsOverlay" class="overlay-panel metrics-overlay">
+            <div class="metrics-title">Flight Metrics</div>
+            <div class="metrics-grid">
+              <div class="metric-card">
+                <div class="metric-icon">⏱️</div>
+                <div class="metric-content">
+                  <div class="metric-value" id="tof">0.00</div>
+                  <div class="metric-label">Time of Flight</div>
+                  <div class="metric-unit">seconds</div>
+                </div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-icon">📈</div>
+                <div class="metric-content">
+                  <div class="metric-value" id="maxHeight">0.00</div>
+                  <div class="metric-label">Max Height</div>
+                  <div class="metric-unit">meters</div>
+                </div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-icon">🎯</div>
+                <div class="metric-content">
+                  <div class="metric-value" id="range">0.00</div>
+                  <div class="metric-label">Range</div>
+                  <div class="metric-unit">meters</div>
+                </div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-icon">⚡</div>
+                <div class="metric-content">
+                  <div class="metric-value" id="maxSpeed">0.00</div>
+                  <div class="metric-label">Max Speed</div>
+                  <div class="metric-unit">m/s</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Real-time Data Overlay -->
+          <div id="hudOverlay" class="overlay-panel hud">
+            <div class="hud-title">Real-time Data</div>
+            <div class="hud-grid">
+              <div><strong>t</strong>: <span id="hudTime">0.00</span> s</div>
+              <div><strong>x</strong>: <span id="hudX">0.00</span> m</div>
+              <div><strong>y</strong>: <span id="hudY">0.00</span> m</div>
+              <div><strong>vx</strong>: <span id="hudVx">0.00</span> m/s</div>
+              <div><strong>vy</strong>: <span id="hudVy">0.00</span> m/s</div>
+              <div><strong>|v|</strong>: <span id="hudV">0.00</span> m/s</div>
+            </div>
+          </div>
+
+          <!-- Right Side Controls -->
+          <div id="rightControls" class="overlay-panel right-controls">
+            <div class="controls-title">Quick Controls</div>
+            <div class="control-buttons">
+              <button id="launchBtnCanvas" class="primary">
+                <svg
+                  width="12"
+                  height="12"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <polygon points="5,3 19,12 5,21" />
+                </svg>
+                <span id="launchBtnCanvasText">Launch</span>
+              </button>
+              <button id="resetBtnCanvas">
+                <svg
+                  width="12"
+                  height="12"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+                  <path d="M3 3v5h5" />
+                </svg>
+                Reset
+              </button>
+              <button id="playPauseBtn" title="Play/Pause">
+                <svg
+                  width="12"
+                  height="12"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <polygon id="playIcon" points="5,3 19,12 5,21" />
+                  <g id="pauseIcon" style="display: none">
+                    <rect x="6" y="4" width="4" height="16" />
+                    <rect x="14" y="4" width="4" height="16" />
+                  </g>
+                </svg>
+                <span id="playPauseText">Play</span>
+              </button>
+            </div>
+            <div class="control-toggles">
+              <label class="toggle-item">
+                <input type="checkbox" id="showGridCanvas" checked />
+                <span class="toggle-label">Grid</span>
+              </label>
+              <label class="toggle-item">
+                <input type="checkbox" id="showPredictionCanvas" />
+                <span class="toggle-label">Prediction</span>
+              </label>
+              <label class="toggle-item">
+                <input type="checkbox" id="airResistanceCanvas" />
+                <span class="toggle-label">Air Resistance</span>
+              </label>
+            </div>
+            <div class="form-group" style="margin-bottom: 8px">
+              <label for="solverCanvas">Solver Method</label>
+              <select id="solverCanvas">
+                <option value="analytic">Analytic (no drag)</option>
+                <option value="euler">Euler</option>
+                <option value="rk4">Runge-Kutta 4</option>
+              </select>
+            </div>
+            <div class="simulation-info">
+              <div>
+                <strong>Max y</strong>: <span id="hudMaxY">0.00</span> m
+              </div>
+              <div>
+                <strong>Range</strong>: <span id="hudRange">0.00</span> m
+              </div>
+              <div>
+                <strong>Solver</strong>: <span id="hudSolver">analytic</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Game Mode Target -->
+          <div id="gameTarget" class="game-target" style="display: none">
+            <div class="target-circle">
+              <div class="target-inner"></div>
+            </div>
+            <div class="target-label">Drag to set target</div>
+          </div>
+        </div>
+
+        <!-- Bottom Row - Analysis Graphs -->
+        <div id="graphsPane" class="graphs-pane">
+          <div class="graph-container">
+            <h3>
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M3 3v18h18" />
+                <path d="M18 17V9" />
+                <path d="M13 17V5" />
+                <path d="M8 17v-3" />
+              </svg>
+              Velocity vs Time
+            </h3>
+            <canvas id="velGraphCanvas"></canvas>
+          </div>
+          <div class="graph-container">
+            <h3>
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M3 3v18h18" />
+                <path d="M18 17V9" />
+                <path d="M13 17V5" />
+                <path d="M8 17v-3" />
+              </svg>
+              Height vs Time
+            </h3>
+            <canvas id="heightGraphCanvas"></canvas>
+          </div>
+           <div class="graph-container">
+             <h3>
+               <svg
+                 width="14"
+                 height="14"
+                 viewBox="0 0 24 24"
+                 fill="none"
+                 stroke="currentColor"
+                 stroke-width="2"
+               >
+                 <path d="M3 3v18h18" />
+                 <path d="M18 17V9" />
+                 <path d="M13 17V5" />
+                 <path d="M8 17v-3" />
+               </svg>
+               Acceleration vs Time
+             </h3>
+             <div id="equationBox" class="equation-box" aria-live="polite"></div>
+             <canvas id="accelGraphCanvas"></canvas>
+           </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="js/main.js"></script>
+  </body>
+</html>
