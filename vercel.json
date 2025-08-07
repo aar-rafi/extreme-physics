@@ -1,13 +1,18 @@
 {
   "version": 2,
   "builds": [
-    { "src": "vite.config.ts", "use": "@vercel/static-build", "config": { "distDir": "dist" } }
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": { "distDir": "dist" }
+    }
   ],
-  "routes": [
-    { "src": "/two-body", "dest": "/2body/index.html" },
-    { "src": "/twobody", "dest": "/2body/index.html" },
-    { "src": "/2body/(.*)", "dest": "/2body/$1" },
-    { "src": "/(.*)", "dest": "/index.html" }
+  "buildCommand": "npm run build",
+  "rewrites": [
+    { "source": "/two-body", "destination": "/2body/index.html" },
+    { "source": "/twobody", "destination": "/2body/index.html" },
+    { "source": "/2body/:path*", "destination": "/2body/:path*" },
+    { "source": "/:path*", "destination": "/index.html" }
   ]
 }
 
