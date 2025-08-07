@@ -69,6 +69,41 @@ const Index = () => {
         </section>
 
         <section className="container mx-auto pb-20">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold mb-4">Meet the Team</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              The passionate physicists and developers behind these interactive simulations
+            </p>
+          </div>
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 mb-20">
+            <article className="rounded-lg border p-6 bg-card shadow-sm text-center">
+              <div className="w-24 h-24 rounded-full bg-gradient-hero mx-auto mb-4 flex items-center justify-center text-white font-bold text-xl">
+                DR
+              </div>
+              <h3 className="text-lg font-semibold mb-1">Dr. Rachel Chen</h3>
+              <p className="text-sm text-muted-foreground mb-3">Lead Physicist</p>
+              <p className="text-sm">Specializes in computational physics and numerical methods. PhD in Theoretical Physics from MIT.</p>
+            </article>
+            <article className="rounded-lg border p-6 bg-card shadow-sm text-center">
+              <div className="w-24 h-24 rounded-full bg-gradient-hero mx-auto mb-4 flex items-center justify-center text-white font-bold text-xl">
+                MJ
+              </div>
+              <h3 className="text-lg font-semibold mb-1">Marcus Johnson</h3>
+              <p className="text-sm text-muted-foreground mb-3">Senior Developer</p>
+              <p className="text-sm">Full-stack developer with expertise in interactive visualizations and real-time simulations.</p>
+            </article>
+            <article className="rounded-lg border p-6 bg-card shadow-sm text-center">
+              <div className="w-24 h-24 rounded-full bg-gradient-hero mx-auto mb-4 flex items-center justify-center text-white font-bold text-xl">
+                SA
+              </div>
+              <h3 className="text-lg font-semibold mb-1">Dr. Sarah Ahmed</h3>
+              <p className="text-sm text-muted-foreground mb-3">Research Scientist</p>
+              <p className="text-sm">Astrophysicist focused on orbital mechanics and gravitational dynamics. Postdoc at Caltech.</p>
+            </article>
+          </div>
+        </section>
+
+        <section className="container mx-auto pb-20">
           <div className="grid gap-6 md:grid-cols-3">
             <article className="rounded-lg border p-6 bg-card shadow-sm">
               <h3 className="text-lg font-semibold mb-2">Accurate by Design</h3>
