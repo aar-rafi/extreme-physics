@@ -1,13 +1,14 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import physicsHero from "@/assets/physics-hero.jpg";
+import SpaceBackground from "@/components/SpaceBackground";
 
 const Hero = () => {
   return (
     <header className="relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-hero opacity-25" aria-hidden="true" />
+      <SpaceBackground />
       <div className="container mx-auto grid gap-8 lg:grid-cols-2 items-center py-16 lg:py-24">
-        <div>
+        <div className="animate-fade-in">
           <p className="text-sm tracking-widest uppercase text-muted-foreground mb-3">Modern Browser Lab</p>
           <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-4">
             Interactive Physics Simulations
@@ -17,12 +18,12 @@ const Hero = () => {
             Tweak parameters, visualize trajectories, and build intuition.
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
-            <Button asChild variant="hero" size="xl">
+            <Button asChild variant="hero" size="xl" className="hover-scale">
               <Link to="/projectile" aria-label="Launch Projectile Motion simulation">
                 Launch Projectile Motion
               </Link>
             </Button>
-            <Button asChild variant="outline" size="xl">
+            <Button asChild variant="outline" size="xl" className="hover-scale">
               <Link to="/two-body" aria-label="Explore Two-Body Problem simulation">
                 Explore Two‑Body Problem
               </Link>
