@@ -82,7 +82,6 @@ const Index = () => {
               </div>
               <h3 className="text-lg font-semibold mb-1">Awesh Islam</h3>
               <p className="text-sm text-muted-foreground mb-3">BUET, CSE</p>
-              <p className="text-sm">Specializes in computational physics and numerical methods. PhD in Theoretical Physics from MIT.</p>
             </article>
             <article className="rounded-lg border p-6 bg-card shadow-sm text-center">
               <div className="w-24 h-24 rounded-full bg-gradient-hero mx-auto mb-4 flex items-center justify-center text-white font-bold text-xl">
@@ -90,7 +89,6 @@ const Index = () => {
               </div>
               <h3 className="text-lg font-semibold mb-1">Jaber Ahmed</h3>
               <p className="text-sm text-muted-foreground mb-3">BUET, CSE</p>
-              <p className="text-sm">Full-stack developer with expertise in interactive visualizations and real-time simulations.</p>
             </article>
             <article className="rounded-lg border p-6 bg-card shadow-sm text-center">
               <div className="w-24 h-24 rounded-full bg-gradient-hero mx-auto mb-4 flex items-center justify-center text-white font-bold text-xl">
@@ -98,7 +96,6 @@ const Index = () => {
               </div>
               <h3 className="text-lg font-semibold mb-1">MD. Jakaria Hossain</h3>
               <p className="text-sm text-muted-foreground mb-3">BUET, CSE</p>
-              <p className="text-sm">Astrophysicist focused on orbital mechanics and gravitational dynamics. Postdoc at Caltech.</p>
             </article>
             <article className="rounded-lg border p-6 bg-card shadow-sm text-center">
               <div className="w-24 h-24 rounded-full bg-gradient-hero mx-auto mb-4 flex items-center justify-center text-white font-bold text-xl">
@@ -106,7 +103,6 @@ const Index = () => {
               </div>
               <h3 className="text-lg font-semibold mb-1">MD. As-Aid Rahman</h3>
               <p className="text-sm text-muted-foreground mb-3">BUET, CSE</p>
-              <p className="text-sm">Astrophysicist focused on orbital mechanics and gravitational dynamics. Postdoc at Caltech.</p>
             </article>
           </div>
         </section>
