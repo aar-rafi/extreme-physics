@@ -78,33 +78,33 @@ const Index = () => {
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-20">
             <article className="rounded-lg border p-6 bg-card shadow-sm text-center">
               <div className="w-24 h-24 rounded-full bg-gradient-hero mx-auto mb-4 flex items-center justify-center text-white font-bold text-xl">
-                DR
+                AI
               </div>
-              <h3 className="text-lg font-semibold mb-1">Dr. Rachel Chen</h3>
-              <p className="text-sm text-muted-foreground mb-3">Lead Physicist</p>
+              <h3 className="text-lg font-semibold mb-1">Awesh Islam</h3>
+              <p className="text-sm text-muted-foreground mb-3">BUET, CSE</p>
               <p className="text-sm">Specializes in computational physics and numerical methods. PhD in Theoretical Physics from MIT.</p>
             </article>
             <article className="rounded-lg border p-6 bg-card shadow-sm text-center">
               <div className="w-24 h-24 rounded-full bg-gradient-hero mx-auto mb-4 flex items-center justify-center text-white font-bold text-xl">
-                MJ
+                JA
               </div>
-              <h3 className="text-lg font-semibold mb-1">Marcus Johnson</h3>
+              <h3 className="text-lg font-semibold mb-1">Jaber Ahmed</h3>
               <p className="text-sm text-muted-foreground mb-3">Senior Developer</p>
               <p className="text-sm">Full-stack developer with expertise in interactive visualizations and real-time simulations.</p>
             </article>
             <article className="rounded-lg border p-6 bg-card shadow-sm text-center">
               <div className="w-24 h-24 rounded-full bg-gradient-hero mx-auto mb-4 flex items-center justify-center text-white font-bold text-xl">
-                SA
+                JH
               </div>
-              <h3 className="text-lg font-semibold mb-1">Dr. Sarah Ahmed</h3>
+              <h3 className="text-lg font-semibold mb-1">MD. Jakaria Hossain</h3>
               <p className="text-sm text-muted-foreground mb-3">Research Scientist</p>
               <p className="text-sm">Astrophysicist focused on orbital mechanics and gravitational dynamics. Postdoc at Caltech.</p>
             </article>
             <article className="rounded-lg border p-6 bg-card shadow-sm text-center">
               <div className="w-24 h-24 rounded-full bg-gradient-hero mx-auto mb-4 flex items-center justify-center text-white font-bold text-xl">
-                SA
+                AR
               </div>
-              <h3 className="text-lg font-semibold mb-1">gaber</h3>
+              <h3 className="text-lg font-semibold mb-1">MD. As-Aid Rahman</h3>
               <p className="text-sm text-muted-foreground mb-3">Research Scientist</p>
               <p className="text-sm">Astrophysicist focused on orbital mechanics and gravitational dynamics. Postdoc at Caltech.</p>
             </article>
