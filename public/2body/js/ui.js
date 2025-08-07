@@ -70,7 +70,7 @@ export function setScenarioOptions(ui) {
   const updateDesc = () => { const o = options.find(x => x.id === sel.value); if (descEl && o) descEl.textContent = o.desc; };
   sel.addEventListener('change', updateDesc);
   updateDesc();
+  // expose for loader usage
   window.__SCENARIO_META = options.reduce((m, o) => (m[o.id] = o, m), {});
 }
-
 

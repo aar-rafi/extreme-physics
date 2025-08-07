@@ -92,4 +92,3 @@ export function applyInputsToState(ui, state, computeEnergy, computeAngularMomen
   return newState;
 }
 
-

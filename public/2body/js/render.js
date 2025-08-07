@@ -105,6 +105,12 @@ export function draw(ctx, canvas, state) {
     drawArrow(ctx, p1.x, p1.y, p2.x, p2.y, '#ffa0b3');
   }
 
+  if (state.showCOM) {
+    const p = worldToCanvas(canvas, { x: com.position.x + frameOffset.x, y: com.position.y + frameOffset.y });
+    ctx.beginPath(); ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
+    ctx.fillStyle = '#ffc14d'; ctx.fill(); ctx.strokeStyle = '#a5751a'; ctx.stroke();
+  }
+
   ctx.fillStyle = 'rgba(255,255,255,0.8)'; ctx.font = '12px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial';
   if (state.energy0 == null || state.angularMomentum0 == null) {
     state.energy0 = computeEnergy(state.bodies, state.G, state.eps);
@@ -131,5 +137,4 @@ export function draw(ctx, canvas, state) {
   ], 'v1, v2, r12');
   ctx.restore();
 }
-
 

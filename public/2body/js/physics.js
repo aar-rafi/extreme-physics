@@ -1,4 +1,5 @@
 import { add, subtract, scale, dot, normalize } from './vec2.js';
+import { ADAPTIVE } from './constants.js';
 
 export function massToRadius(mass) {
   const baseRadius = 3;
@@ -13,8 +14,9 @@ export function computeAccelerations(bodies, G, eps) {
     for (let j = 0; j < bodies.length; j++) {
       if (i === j) continue;
       const r = subtract(bodies[j].position, bodies[i].position);
+      // Use slightly larger lower bound than machine epsilon to avoid extreme accelerations
       const soft2 = eps * eps;
-      const distSqr = Math.max(1e-12, r.x * r.x + r.y * r.y + soft2);
+      const distSqr = Math.max(1e-8, r.x * r.x + r.y * r.y + soft2);
       const invDist = 1 / Math.sqrt(distSqr);
       const invDist3 = invDist * invDist * invDist;
       const f = G * bodies[j].mass * invDist3;
@@ -77,7 +79,8 @@ export function rk4Step(bodies, dt, G, eps) {
 export function rk45AdaptiveIntegrate(bodies, dt, G, eps, absTol, relTol) {
   const safety = 0.9, minScale = 0.2, maxScale = 5.0;
   let remaining = dt;
-  let h = Math.min(dt, Math.max(1e-6, dt * 0.5));
+  let h = Math.min(dt, Math.max(dt * ADAPTIVE.minRelativeStep, dt * 0.5));
+  let stepsBudget = 0;
   const N = bodies.length;
   const snapshot = () => bodies.map(b => ({ mass: b.mass, position: { x: b.position.x, y: b.position.y }, velocity: { x: b.velocity.x, y: b.velocity.y }, radius: b.radius, trail: b.trail, color: b.color }));
   const restore = (copy) => { for (let i = 0; i < bodies.length; i++) { bodies[i].position.x = copy[i].position.x; bodies[i].position.y = copy[i].position.y; bodies[i].velocity.x = copy[i].velocity.x; bodies[i].velocity.y = copy[i].velocity.y; } };
@@ -120,6 +123,7 @@ export function rk45AdaptiveIntegrate(bodies, dt, G, eps, absTol, relTol) {
       P5[i] = { x: P0[i].x + hStep * (bP[0]*V0[i].x + bP[2]*B3[i].velocity.x + bP[3]*B4[i].velocity.x + bP[4]*B5[i].velocity.x + bP[5]*B6[i].velocity.x), y: P0[i].y + hStep * (bP[0]*V0[i].y + bP[2]*B3[i].velocity.y + bP[3]*B4[i].velocity.y + bP[4]*B5[i].velocity.y + bP[5]*B6[i].velocity.y) };
       V5[i] = { x: V0[i].x + hStep * (bV[0]*A1[i].x + bV[2]*A3[i].x + bV[3]*A4[i].x + bV[4]*A5[i].x + bV[5]*A6[i].x), y: V0[i].y + hStep * (bV[0]*A1[i].y + bV[2]*A3[i].y + bV[3]*A4[i].y + bV[4]*A5[i].y + bV[5]*A6[i].y) };
     }
+    // Error norm estimate (approximate, acceptable for control)
     let errNorm = 0;
     for (let i = 0; i < N; i++) {
       const scP = absTol + Math.max(Math.abs(P0[i].x), Math.abs(P5[i].x)) * relTol;
@@ -138,14 +142,21 @@ export function rk45AdaptiveIntegrate(bodies, dt, G, eps, absTol, relTol) {
     const copy = snapshot();
     const hTry = Math.min(h, remaining);
     const err = rk45Once(hTry);
+    stepsBudget++;
     if (err === 0 || err < 1) {
       remaining -= hTry;
-      const scaleUp = 0.9 * Math.pow(Math.max(err, 1e-12), -0.2);
-      h = Math.min(hTry * Math.max(0.2, Math.min(5.0, scaleUp)), remaining);
+      const scaleUp = safety * Math.pow(Math.max(err, 1e-12), -0.2);
+      h = Math.min(hTry * Math.max(minScale, Math.min(maxScale, scaleUp)), Math.max(remaining, dt * ADAPTIVE.minRelativeStep));
     } else {
       restore(copy);
-      const scaleDown = 0.9 * Math.pow(err, -0.25);
-      h = Math.max(hTry * Math.max(0.2, Math.min(1, scaleDown)), 1e-8);
+      const scaleDown = safety * Math.pow(err, -0.25);
+      h = Math.max(hTry * Math.max(minScale, Math.min(1, scaleDown)), dt * ADAPTIVE.minRelativeStep);
+    }
+    // Guard against pathological near-singular close approach: relax tolerances to keep sim responsive
+    if (stepsBudget > ADAPTIVE.maxInternalSteps) {
+      absTol *= ADAPTIVE.toleranceGrowthFactorOnBudget;
+      relTol *= ADAPTIVE.toleranceGrowthFactorOnBudget;
+      stepsBudget = 0; // reset and continue
     }
   }
 }
@@ -226,6 +237,7 @@ export function computeAngularMomentum(bodies) {
   return Lz;
 }
 
+// Scenario helpers generate body states and suggested inputs
 export const SCENARIOS = {
   circular_orbit: (ui, state) => {
     const M = 20; const r = 200; const G = 1;
@@ -243,6 +255,7 @@ export const SCENARIOS = {
   },
   elliptic_orbit: (ui, state) => {
     const M = 10; const r = 220; const e = 0.6; const G = 1;
+    // Periapsis rp = a(1-e). Choose v at periapsis: vp = sqrt(GM(1+e)/rp)
     const rp = r * (1 - e); const vp = Math.sqrt(G * M * (1 + e) / rp);
     return {
       ...state, G, integrator: 'velocity_verlet', dt: 0.05, stepsPerFrame: 2,
@@ -253,7 +266,7 @@ export const SCENARIOS = {
     };
   },
   hyperbolic_flyby: (ui, state) => {
-    const M = 20; const G = 1; const b = 300;
+    const M = 20; const G = 1; const b = 300; // impact parameter
     return {
       ...state, G, integrator: 'rk45', absTol: 1e-6, relTol: 1e-6, dt: 0.2, stepsPerFrame: 1,
       bodies: [
@@ -272,8 +285,8 @@ export const SCENARIOS = {
     };
   },
   equal_mass_binary: (ui, state) => {
-    const m = 5; const r = 160; const G = 1;
-    const v = Math.sqrt(G * (2*m) / (2*r));
+    const m = 5; const r = 160; const G = 1; // each orbits at r about COM, opposite sides
+    const v = Math.sqrt(G * (2*m) / (2*r)); // each sees total mass, distance 2r between
     return {
       ...state, G, integrator: 'velocity_verlet', dt: 0.05, stepsPerFrame: 2,
       bodies: [
@@ -284,10 +297,12 @@ export const SCENARIOS = {
   },
 };
 
+// Expose simple scenario loader for index.js
 window.__SCENARIOS = {
   applyScenario: (id, ui, prev) => {
     const fn = SCENARIOS[id]; if (!fn) return prev;
     const next = fn(ui, prev);
+    // Update UI inputs to reflect scenario
     const [b1, b2] = next.bodies;
     if (ui.G) ui.G.value = String(next.G ?? 1);
     if (ui.integrator) ui.integrator.value = String(next.integrator);
@@ -303,6 +318,7 @@ window.__SCENARIOS = {
     if (ui.y2) ui.y2.value = String(b2.position.y);
     if (ui.vx2) ui.vx2.value = String(b2.velocity.x);
     if (ui.vy2) ui.vy2.value = String(b2.velocity.y);
+    // Recompute radii and baselines
     for (const b of next.bodies) b.radius = massToRadius(b.mass);
     next.energy0 = computeEnergy(next.bodies, next.G, next.eps);
     next.angularMomentum0 = computeAngularMomentum(next.bodies);
@@ -311,5 +327,4 @@ window.__SCENARIOS = {
     return next;
   }
 }
-
 

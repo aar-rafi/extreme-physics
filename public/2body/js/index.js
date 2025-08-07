@@ -16,13 +16,18 @@ resizeCanvas(canvas, ctx, ui);
 
 let state = createStateFromInputs(ui);
 
+// Preload scenario options and hook loader
 setScenarioOptions(ui);
 document.getElementById('loadScenarioBtn').addEventListener('click', () => {
   const sel = ui.scenarioSelect.value;
   if (!sel) return;
+  // scenario functions return a fresh state; we then sync inputs and redraw
   state = window.__SCENARIOS.applyScenario(sel, ui, state);
+  // Ensure canvas and UI reflect new parameters; recompute radii and reset metrics already done in apply
   resizeCanvas(canvas, ctx, ui);
+  // Ensure paused preview renders correctly
   if (!state.running) {
+    // No dynamics step here, just redraw with new initial conditions
     for (const b of state.bodies) b.radius = massToRadius(b.mass);
   }
   draw(ctx, canvas, state);
@@ -38,7 +43,10 @@ const INTEGRATORS = {
 function advanceBy(dtSub) {
   const { G, eps, integrator, absTol, relTol } = state;
   const step = INTEGRATORS[integrator] || INTEGRATORS.velocity_verlet;
-  step(state.bodies, dtSub, G, eps, absTol, relTol);
+  // For RK45, clamp tolerances if extremely small to avoid stalls
+  const tolAbs = Math.max(1e-10, absTol);
+  const tolRel = Math.max(1e-10, relTol);
+  step(state.bodies, dtSub, G, eps, tolAbs, tolRel);
 }
 
 function updateRadiiFromMass() {
@@ -158,6 +166,7 @@ function applyInputsToStateAndResetMetrics() {
     ui.m1, ui.x1, ui.y1, ui.vx1, ui.vy1, ui.m2, ui.x2, ui.y2, ui.vx2, ui.vy2,
   ].forEach(el => el.addEventListener(evt, () => {
     applyInputsToStateAndResetMetrics();
+    // Recompute radii and redraw immediately even when paused
     updateRadiiFromMass();
     draw(ctx, canvas, state);
     updateLiveUI();
@@ -168,6 +177,7 @@ ui.toggleRunBtn.addEventListener('click', () => { state.running = !state.running
 ui.resetBtn.addEventListener('click', () => { state = createStateFromInputs(ui); ui.toggleRunBtn.textContent = state.running ? 'Pause' : 'Start'; });
 ui.clearTrailsBtn.addEventListener('click', () => { for (const b of state.bodies) b.trail.length = 0; });
 
+// Sidebar resizer logic (same behavior; kept local here)
 (function setupResizer() {
   const resizer = document.getElementById('resizer'); if (!resizer) return;
   let dragging = false; let startX = 0; let startWidth = 0; const root = document.documentElement;
@@ -176,6 +186,7 @@ ui.clearTrailsBtn.addEventListener('click', () => { for (const b of state.bodies
   window.addEventListener('mouseup', () => { dragging = false; });
 })();
 
+// Interaction (drag to move/set velocity)
 let draggingIndex = -1; let dragStart = null; let shiftHeld = false;
 canvas.addEventListener('mousedown', (e) => {
   const rect = canvas.getBoundingClientRect(); const mx = e.clientX - rect.left; const my = e.clientY - rect.top;
@@ -211,5 +222,4 @@ function loop() {
   requestAnimationFrame(loop);
 }
 loop();
-
 
